@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CeriBlossom | Toko Bunga</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="logo">🌸 CeriBlossom</div>
+
+    <nav>
+        <button onclick="tampilSlide('beranda')">Beranda</button>
+        <button onclick="tampilSlide('produk')">Produk</button>
+        <button onclick="tampilSlide('tentang')">Tentang</button>
+        <button onclick="bukaKeranjang()">🛒 Keranjang</button>
+        <button onclick="bukaKontak()">Kontak</button>
+    </nav>
+</header>
+
+<main class="slide-container">
+
+    <!-- BERANDA -->
+    <section class="slide aktif" id="beranda">
+        <div class="beranda-content">
+            <div class="beranda-text">
+                <p class="label">🌷 BLOOM WITH LOVE</p>
+                <h1>Keindahan Bunga<br>Untuk Setiap Cerita</h1>
+                <p>
+                    Hadirkan kebahagiaan melalui rangkaian bunga
+                    cantik dari CeriBlossom.
+                </p>
+            </div>
+
+            <img src="gambar/walpp.jpg"
+                 alt="Buket bunga cantik">
+        </div>
+    </section>
+
+    <!-- PRODUK -->
+    <section class="slide" id="produk">
+        <div class="judul-slide">
+            <p>🌼 PILIHAN BUNGA</p>
+            <h2>Produk CeriBlossom</h2>
+            <span>Temukan buket bunga favoritmu.</span>
+        </div>
+
+        <div id="daftar-produk" class="produk-grid"></div>
+    </section>
+
+    <!-- TENTANG -->
+    <section class="slide" id="tentang">
+        <div class="tentang-content">
+            <img src="gambar/wlp.jfif"
+                 alt="Rangkaian bunga">
+
+            <div>
+                <p class="label">🌺 TENTANG KAMI</p>
+                <h2>CeriBlossom Flower Shop</h2>
+                <p>
+                    CeriBlossom adalah toko bunga yang menyediakan
+                    berbagai pilihan buket cantik untuk menemani
+                    momen spesial Anda.
+                </p>
+                <p>
+                    Kami percaya bahwa bunga dapat menyampaikan
+                    perasaan dan menghadirkan kebahagiaan.
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>🌸 CeriBlossom © 2026 | Bloom With Love 🌸</p>
+</footer>
+
+<!-- POPUP KERANJANG -->
+<div class="popup" id="popup-keranjang">
+    <div class="popup-box">
+        <button class="close" onclick="tutupKeranjang()">×</button>
+        <h2>🛒 Keranjang Belanja</h2>
+
+        <div id="isi-keranjang"></div>
+
+        <h3>Total: <span id="total-keranjang">Rp0</span></h3>
+
+        <button class="tombol-utama" onclick="checkout()">
+            Lanjut Pembayaran
+        </button>
+    </div>
+</div>
+
+<!-- POPUP PEMBAYARAN -->
+<div class="popup" id="popup-pembayaran">
+    <div class="popup-box pembayaran-box">
+        <button class="close" onclick="tutupPembayaran()">×</button>
+        <h2>🌷 Formulir Pembayaran</h2>
+
+        <label>Nama Lengkap</label>
+        <input type="text" id="nama-pembeli" placeholder="Masukkan nama">
+
+        <label>Alamat Pengiriman</label>
+        <textarea id="alamat-pembeli" placeholder="Masukkan alamat"></textarea>
+
+        <label>Nomor Telepon</label>
+        <input type="tel" id="telepon-pembeli" placeholder="Masukkan nomor telepon">
+
+        <h3>Pilih Metode Pembayaran</h3>
+
+        <div class="pilihan-metode">
+            <button class="metode" onclick="pilihMetode('QRIS', this)">QRIS</button>
+            <button class="metode" onclick="pilihMetode('Transfer BCA', this)">BCA</button>
+            <button class="metode" onclick="pilihMetode('Transfer BRI', this)">BRI</button>
+            <button class="metode" onclick="pilihMetode('Transfer Mandiri', this)">Mandiri</button>
+            <button class="metode" onclick="pilihMetode('DANA', this)">DANA</button>
+            <button class="metode" onclick="pilihMetode('GoPay', this)">GoPay</button>
+            <button class="metode" onclick="pilihMetode('COD', this)">COD</button>
+        </div>
+
+        <div id="detail-pembayaran"></div>
+
+        <button class="tombol-utama" onclick="konfirmasiPembayaran()">
+            Konfirmasi Pesanan
+        </button>
+    </div>
+</div>
+
+<!-- POPUP BERHASIL -->
+<div class="popup" id="popup-sukses">
+    <div class="popup-box sukses-box">
+        <div class="ikon-sukses">🌸</div>
+        <h2>Pesanan Berhasil!</h2>
+        <p id="pesan-sukses"></p>
+        <p>Nomor Pesanan: <b id="nomor-pesanan"></b></p>
+        <button class="tombol-utama" onclick="selesaiPesanan()">
+            Selesai
+        </button>
+    </div>
+</div>
+
+<!-- POPUP KONTAK -->
+<div class="popup" id="popup-kontak">
+    <div class="popup-box">
+        <button class="close" onclick="tutupKontak()">×</button>
+        <h2>💌 Hubungi Kami</h2>
+
+        <form id="form-kontak">
+            <label>Nama</label>
+            <input type="text" required placeholder="Nama kamu">
+
+            <label>Email</label>
+            <input type="email" required placeholder="Email kamu">
+
+            <label>Pesan</label>
+            <textarea required placeholder="Tulis pesan kamu"></textarea>
+
+            <button class="tombol-utama" type="submit">
+                Kirim Pesan
+            </button>
+        </form>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
