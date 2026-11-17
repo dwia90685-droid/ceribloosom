@@ -1,270 +1,296 @@
 
-const produkBunga = [
+const products = [
     {
-        nama: "Bunga Anyelir",
-        harga: 10000,
-        gambar: "gambar/bungaanyelir.jfif"
+        id: 1,
+        name: "Pink Rose Bouquet",
+        description: "Buket mawar pink yang romantis",
+        price: 150000,
+        image: "https://images.unsplash.com/photo-1520763185298-1b434c919102?w=500"
     },
     {
-        nama: "Buket Lily",
-        harga: 15000,
-        gambar: "gambar/bungalily.jfif"
+        id: 2,
+        name: "White Elegance",
+        description: "Bunga putih yang elegan",
+        price: 175000,
+        image: "https://images.unsplash.com/photo-1494972308805-463bc619d34e?w=500"
     },
     {
-        nama: "Bunga Matahari",
-        harga: 12000,
-        gambar: "gambar/bungamatahari.jpg"
+        id: 3,
+        name: "Sunflower Happiness",
+        description: "Bunga matahari penuh keceriaan",
+        price: 125000,
+        image: "https://images.unsplash.com/photo-1597848212624-e6c7a8d4e6e2?w=500"
     },
     {
-        nama: "Bunga Mawar",
-        harga: 100000,
-        gambar: "gambar/bungamawar.webp"
-    },
-    {
-        nama: "Bunga Anggrek",
-        harga: 20000,
-        gambar: "gambar/bunganggrek.webp"
-    },
-    {
-        nama: "Buket Tulip",
-        harga: 150000,
-        gambar: "gambar/bungatulip.jfif"
+        id: 4,
+        name: "Purple Dream",
+        description: "Rangkaian bunga bernuansa ungu",
+        price: 200000,
+        image: "https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=500"
     }
 ];
 
-let keranjang = [];
-let metodeDipilih = "";
+let cart = [];
+let currentSlide = 0;
 
-// FORMAT RUPIAH
-function formatRupiah(angka) {
-    return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        maximumFractionDigits: 0
-    }).format(angka);
+function rupiah(number) {
+    return "Rp" + number.toLocaleString("id-ID");
 }
 
-// TAMPILKAN PRODUK
-function tampilkanProduk() {
-    const tempat = document.getElementById("daftar-produk");
+// MENAMPILKAN PRODUK
+function renderProducts() {
+    const container = document.getElementById("product-list");
 
-    tempat.innerHTML = produkBunga.map((produk, index) => `
-        <div class="produk-card">
-            <img src="${produk.gambar}" alt="${produk.nama}">
-            <h3>${produk.nama}</h3>
-            <p class="harga">${formatRupiah(produk.harga)}</p>
-            <button onclick="tambahKeranjang(${index})">
-                + Tambah
-            </button>
+    container.innerHTML = products.map((product, index) => `
+        <div class="product-card" style="animation-delay:${index * 0.12}s">
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <div class="product-bottom">
+                <span class="product-price">${rupiah(product.price)}</span>
+                <button class="add-btn" onclick="addToCart(${product.id})">
+                    + Tambah
+                </button>
+            </div>
         </div>
     `).join("");
 }
 
-// PINDAH SLIDE
-function tampilSlide(nama) {
-    document.querySelectorAll(".slide").forEach(slide => {
-        slide.classList.remove("aktif");
+// NAVIGASI SLIDE
+function showSlide(index) {
+    const slides = document.querySelectorAll(".slide");
+    const navLinks = document.querySelectorAll(".nav-link");
+    const dots = document.querySelectorAll(".dot");
+
+    if (index < 0 || index >= slides.length) return;
+
+    currentSlide = index;
+
+    slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
     });
 
-    document.getElementById(nama).classList.add("aktif");
+    navLinks.forEach((link, i) => {
+        link.classList.toggle("active", i === index);
+    });
+
+    dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === index);
+    });
 }
 
-// TAMBAH KERANJANG
-function tambahKeranjang(index) {
-    const produk = produkBunga[index];
-    const ditemukan = keranjang.find(item => item.nama === produk.nama);
+function nextSlide() {
+    showSlide((currentSlide + 1) % 4);
+}
 
-    if (ditemukan) {
-        ditemukan.jumlah++;
+function previousSlide() {
+    showSlide((currentSlide - 1 + 4) % 4);
+}
+
+// NAVIGASI MENU
+document.querySelectorAll(".nav-link").forEach(button => {
+    button.addEventListener("click", () => {
+        showSlide(Number(button.dataset.slide));
+    });
+});
+
+// TAMBAH KERANJANG
+function addToCart(id) {
+    const product = products.find(item => item.id === id);
+    const existing = cart.find(item => item.id === id);
+
+    if (existing) {
+        existing.quantity++;
     } else {
-        keranjang.push({
-            ...produk,
-            jumlah: 1
+        cart.push({
+            ...product,
+            quantity: 1
         });
     }
 
-    perbaruiKeranjang();
-    alert(produk.nama + " berhasil ditambahkan ke keranjang 🌸");
+    updateCart();
+
+    alert(product.name + " berhasil ditambahkan ke keranjang! 🌸");
 }
 
-// TOTAL HARGA
-function hitungTotal() {
-    return keranjang.reduce((total, item) => {
-        return total + item.harga * item.jumlah;
-    }, 0);
-}
+// UPDATE KERANJANG
+function updateCart() {
+    const count = cart.reduce(
+        (total, item) => total + item.quantity, 0
+    );
 
-// PERBARUI KERANJANG
-function perbaruiKeranjang() {
-    const tempat = document.getElementById("isi-keranjang");
+    document.getElementById("cart-count").textContent = count;
 
-    if (keranjang.length === 0) {
-        tempat.innerHTML = "<p>Keranjang masih kosong 🌷</p>";
+    const container = document.getElementById("cart-items");
+
+    if (cart.length === 0) {
+        container.innerHTML = `
+            <div class="empty-cart">
+                <div style="font-size:45px">🛍️</div>
+                <p>Keranjang belanjamu masih kosong.</p>
+                <p>Yuk, pilih bunga favoritmu!</p>
+            </div>
+        `;
     } else {
-        tempat.innerHTML = keranjang.map((item, index) => `
-            <div class="item-keranjang">
-                <div>
-                    <b>${item.nama}</b><br>
-                    ${item.jumlah} x ${formatRupiah(item.harga)}
+        container.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <img src="${item.image}" alt="${item.name}">
+                <div class="cart-item-info">
+                    <strong>${item.name}</strong>
+                    <small>${rupiah(item.price)}</small>
                 </div>
-                <button onclick="hapusKeranjang(${index})">
-                    Hapus
-                </button>
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity(${item.id}, -1)">−</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="changeQuantity(${item.id}, 1)">+</button>
+                </div>
             </div>
         `).join("");
     }
 
-    document.getElementById("total-keranjang").textContent =
-        formatRupiah(hitungTotal());
+    const total = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity, 0
+    );
+
+    document.getElementById("cart-total").textContent = rupiah(total);
 }
 
-// HAPUS PRODUK
-function hapusKeranjang(index) {
-    keranjang.splice(index, 1);
-    perbaruiKeranjang();
+// UBAH JUMLAH PRODUK
+function changeQuantity(id, amount) {
+    const item = cart.find(product => product.id === id);
+
+    if (!item) return;
+
+    item.quantity += amount;
+
+    if (item.quantity <= 0) {
+        cart = cart.filter(product => product.id !== id);
+    }
+
+    updateCart();
 }
 
-// BUKA KERANJANG
-function bukaKeranjang() {
-    perbaruiKeranjang();
-    document.getElementById("popup-keranjang").classList.add("aktif");
+// POPUP
+function openCart() {
+    updateCart();
+    document.getElementById("cart-modal").classList.add("show");
 }
 
-function tutupKeranjang() {
-    document.getElementById("popup-keranjang").classList.remove("aktif");
+function closeModal(id) {
+    document.getElementById(id).classList.remove("show");
 }
 
 // CHECKOUT
 function checkout() {
-    if (keranjang.length === 0) {
-        alert("Keranjang masih kosong!");
+    if (cart.length === 0) {
+        alert("Keranjang masih kosong. Silakan pilih bunga terlebih dahulu! 🌷");
         return;
     }
 
-    tutupKeranjang();
-    document.getElementById("popup-pembayaran").classList.add("aktif");
+    closeModal("cart-modal");
+    document.getElementById("order-modal").classList.add("show");
 }
 
-// TUTUP PEMBAYARAN
-function tutupPembayaran() {
-    document.getElementById("popup-pembayaran").classList.remove("aktif");
-}
-
-// PILIH METODE
-function pilihMetode(metode, tombol) {
-    metodeDipilih = metode;
-
-    document.querySelectorAll(".metode").forEach(item => {
-        item.classList.remove("terpilih");
-    });
-
-    tombol.classList.add("terpilih");
-
-    const detail = document.getElementById("detail-pembayaran");
-
-    const informasi = {
-        "QRIS": "QRIS DEMO<br>Ini hanya contoh tampilan pembayaran. Bukan QR asli.",
-        "Transfer BCA": "Bank BCA<br>Nomor rekening contoh: 0000000000<br>Atas nama: CeriBlossom (Contoh)",
-        "Transfer BRI": "Bank BRI<br>Nomor rekening contoh: 0000000000<br>Atas nama: CeriBlossom (Contoh)",
-        "Transfer Mandiri": "Bank Mandiri<br>Nomor rekening contoh: 0000000000<br>Atas nama: CeriBlossom (Contoh)",
-        "DANA": "DANA<br>Nomor contoh: 080000000000<br>Atas nama: CeriBlossom (Contoh)",
-        "GoPay": "GoPay<br>Nomor contoh: 080000000000<br>Atas nama: CeriBlossom (Contoh)",
-        "COD": "Pembayaran dilakukan saat pesanan diterima. (Simulasi)"
-    };
-
-    detail.innerHTML = `
-        <div class="detail-pembayaran">
-            <b>${metode}</b><br>
-            ${informasi[metode]}
-            <br><br>
-            Total Pesanan: <b>${formatRupiah(hitungTotal())}</b>
-        </div>
-    `;
-}
-
-// KONFIRMASI PEMBAYARAN
-function konfirmasiPembayaran() {
-    const nama = document.getElementById("nama-pembeli").value.trim();
-    const alamat = document.getElementById("alamat-pembeli").value.trim();
-    const telepon = document.getElementById("telepon-pembeli").value.trim();
-
-    if (!nama || !alamat || !telepon) {
-        alert("Lengkapi data pemesanan terlebih dahulu!");
-        return;
-    }
-
-    if (!metodeDipilih) {
-        alert("Silakan pilih metode pembayaran!");
-        return;
-    }
-
-    const nomor = "CB" + Date.now().toString().slice(-8);
-
-    document.getElementById("pesan-sukses").textContent =
-        "Terima kasih " + nama + "! Pesanan kamu berhasil dibuat dengan metode " + metodeDipilih + ".";
-
-    document.getElementById("nomor-pesanan").textContent = nomor;
-
-    tutupPembayaran();
-
-    document.getElementById("popup-sukses").classList.add("aktif");
-
-    keranjang = [];
-    metodeDipilih = "";
-    perbaruiKeranjang();
-
-    document.getElementById("nama-pembeli").value = "";
-    document.getElementById("alamat-pembeli").value = "";
-    document.getElementById("telepon-pembeli").value = "";
-    document.getElementById("detail-pembayaran").innerHTML = "";
-
-    document.querySelectorAll(".metode").forEach(item => {
-        item.classList.remove("terpilih");
-    });
-}
-
-// SELESAI PESANAN
-function selesaiPesanan() {
-    document.getElementById("popup-sukses").classList.remove("aktif");
-    tampilSlide("beranda");
-}
-
-// KONTAK
-function bukaKontak() {
-    document.getElementById("popup-kontak").classList.add("aktif");
-}
-
-function tutupKontak() {
-    document.getElementById("popup-kontak").classList.remove("aktif");
-}
-
-document.getElementById("form-kontak").addEventListener("submit", function(event) {
+// PROSES PEMESANAN SIMULASI
+document.getElementById("order-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    alert("Terima kasih! Pesan kamu berhasil dikirim (simulasi).");
+    const name = document.getElementById("customer-name").value.trim();
+    const phone = document.getElementById("customer-phone").value.trim();
+    const address = document.getElementById("customer-address").value.trim();
+    const payment = document.getElementById("payment-method").value;
 
-    this.reset();
-    tutupKontak();
+    if (!name || !phone || !address || !payment) {
+        alert("Mohon lengkapi semua formulir!");
+        return;
+    }
+
+    if (!/^[0-9+\-\s]{9,16}$/.test(phone)) {
+        alert("Masukkan nomor WhatsApp yang valid!");
+        return;
+    }
+
+    const total = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity, 0
+    );
+
+    const orderDetails = cart.map(item =>
+        `${item.name} (${item.quantity} buah)`
+    ).join(", ");
+
+    const message = `
+        Nama: ${name}
+        Nomor: ${phone}
+        Alamat: ${address}
+        Produk: ${orderDetails}
+        Total: ${rupiah(total)}
+        Pembayaran: ${payment}
+    `;
+
+    console.log("DATA PESANAN SIMULASI:", message);
+
+    document.getElementById("success-message").textContent =
+        `Terima kasih ${name}! Pesananmu berhasil dicatat dalam simulasi. Total belanja ${rupiah(total)} dengan metode ${payment}.`;
+
+    closeModal("order-modal");
+    document.getElementById("success-modal").classList.add("show");
+
+    cart = [];
+    updateCart();
+
+    document.getElementById("order-form").reset();
 });
 
-// TUTUP POPUP KLIK LUAR
-document.querySelectorAll(".popup").forEach(popup => {
-    popup.addEventListener("click", function(event) {
-        if (event.target === popup) {
-            popup.classList.remove("aktif");
+// SELESAI PEMESANAN
+function finishOrder() {
+    closeModal("success-modal");
+    showSlide(0);
+}
+
+// TUTUP POPUP JIKA KLIK DI LUAR
+document.querySelectorAll(".overlay").forEach(overlay => {
+    overlay.addEventListener("click", function(event) {
+        if (event.target === this) {
+            this.classList.remove("show");
         }
     });
 });
 
-// TOMBOL ESCAPE
+// TUTUP POPUP DENGAN TOMBOL ESC
 document.addEventListener("keydown", function(event) {
     if (event.key === "Escape") {
-        document.querySelectorAll(".popup").forEach(popup => {
-            popup.classList.remove("aktif");
+        document.querySelectorAll(".overlay").forEach(modal => {
+            modal.classList.remove("show");
         });
     }
+
+    if (event.key === "ArrowRight") nextSlide();
+    if (event.key === "ArrowLeft") previousSlide();
 });
 
+// SWIPE SLIDE UNTUK HP
+let touchStartX = 0;
+
+document.getElementById("slides").addEventListener("touchstart", event => {
+    touchStartX = event.changedTouches[0].screenX;
+}, { passive: true });
+
+document.getElementById("slides").addEventListener("touchend", event => {
+    const touchEndX = event.changedTouches[0].screenX;
+    const difference = touchEndX - touchStartX;
+
+    if (Math.abs(difference) > 70) {
+        if (difference < 0) nextSlide();
+        else previousSlide();
+    }
+}, { passive: true });
+
 // JALANKAN WEBSITE
-tampilkanProduk();
-perbaruiKeranjang();
+renderProducts();
+updateCart();
+
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        document.getElementById("loader").classList.add("hide");
+    }, 1000);
+});
