@@ -6,9 +6,9 @@
 const produk = [
     {
         id: 1,
-        nama: "Buket Mawar Pink",
+        nama: "Bunga Mawar",
         harga: 85000,
-        kategori: "buket",
+        kategori: "bunga",
         gambar: "gambar/bungamawar.webp"
     },
     {
