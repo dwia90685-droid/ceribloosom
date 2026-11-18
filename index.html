@@ -9,77 +9,166 @@
 </head>
 <body>
 
+<!-- ANIMASI PEMBUKA -->
+<div id="intro">
+    <div class="intro-content">
+        <div class="intro-logo">🌸</div>
+        <h1>CeriBlossom</h1>
+        <p>Keindahan bunga untuk setiap cerita</p>
+    </div>
+</div>
+
+<!-- HEADER -->
 <header>
-    <h2>🌸 CeriBlossom</h2>
+    <a href="#beranda" class="logo">🌷 CeriBlossom</a>
+
     <nav>
-        <button onclick="pindahSlide(0)">Beranda</button>
-        <button onclick="pindahSlide(1)">Produk</button>
-        <button onclick="pindahSlide(2)">Tentang</button>
-        <button onclick="pindahSlide(3)">Kontak</button>
+        <a href="#beranda">Beranda</a>
+        <a href="#toko">Toko</a>
+        <a href="#promo">Promo</a>
+        <a href="#tentang">Tentang</a>
+        <a href="#kontak">Kontak</a>
     </nav>
+
+    <button class="cart-button" onclick="bukaKeranjang()">
+        🛒 Keranjang <span id="jumlah-keranjang">0</span>
+    </button>
 </header>
 
-<main>
-    <section class="slide aktif">
-        <div class="hero">
-            <div>
-                <h1>Keindahan Bunga untuk Setiap Momen 🌷</h1>
-                <p>Temukan rangkaian bunga cantik dari CeriBlossom.</p>
-                <button onclick="pindahSlide(1)">Lihat Produk</button>
-            </div>
-            <img src="gambar/wlp.jfif" alt="Buket bunga utama">
-        </div>
-    </section>
+<!-- BERANDA -->
+<section class="hero" id="beranda">
+    <div class="hero-text">
+        <p class="subjudul">🌸 WELCOME TO CERIBLOSSOM 🌸</p>
+        <h1>Bunga Indah,<br><span>Cerita Istimewa</span></h1>
+        <p>
+            Temukan rangkaian bunga cantik untuk orang-orang
+            tersayang. Hadirkan kebahagiaan melalui setiap kelopak.
+        </p>
+        <a href="#toko" class="btn">Belanja Sekarang 🌷</a>
+    </div>
 
-    <section class="slide">
-        <h1>🌺 Produk Bunga Kami</h1>
-        <div class="produk">
-            <div class="kartu">
-                <img src="gambar/bungamawar.webp" alt="Bunga mawar">
-                <h3>Bunga Mawar</h3>
-                <p>Rp50.000</p>
-            </div>
+    <div class="hero-image">
+        <img src="gambar/banner.jpg" alt="Buket bunga CeriBlossom">
+    </div>
+</section>
 
-            <div class="kartu">
-                <img src="gambar/bungatulip.jfif" alt="Bunga tulip">
-                <h3>BungaTulip</h3>
-                <p>Rp50.000</p>
-            </div>
+<!-- KEUNGGULAN -->
+<section class="keunggulan">
+    <div>🌹<h3>Bunga Segar</h3><p>Dipilih dengan kualitas terbaik</p></div>
+    <div>🎁<h3>Hadiah Spesial</h3><p>Cocok untuk berbagai momen</p></div>
+    <div>💗<h3>Penuh Cinta</h3><p>Dirangkai dengan sepenuh hati</p></div>
+</section>
 
-            <div class="kartu">
-                <img src="gambar/matahari.jpg" alt="Bunga matahari">
-                <h3>Buket Matahari</h3>
-                <p>Rp65.000</p>
-            </div>
+<!-- TOKO -->
+<section class="section" id="toko">
+    <div class="section-title">
+        <p>KOLEKSI BUNGA KAMI</p>
+        <h2>Temukan Bunga Favoritmu 🌸</h2>
+    </div>
 
-            <div class="kartu">
-                <img src="gambar/bunga-putih.jpg" alt="Bunga putih">
-                <h3>Buket Putih</h3>
-                <p>Rp90.000</p>
-            </div>
-        </div>
-    </section>
+    <div class="filter">
+        <button class="filter-btn active" onclick="filterProduk('semua', this)">Semua</button>
+        <button class="filter-btn" onclick="filterProduk('buket', this)">Buket</button>
+        <button class="filter-btn" onclick="filterProduk('bunga', this)">Bunga</button>
+    </div>
 
-    <section class="slide">
-        <h1>🌼 Tentang CeriBlossom</h1>
-        <img class="tentang-img" src="gambar/bunga-utama.jpg" alt="Rangkaian bunga">
-        <p>CeriBlossom menyediakan berbagai rangkaian bunga cantik
-        untuk hadiah, ulang tahun, dan momen spesial.</p>
-    </section>
+    <div class="produk-container" id="daftar-produk"></div>
+</section>
 
-    <section class="slide">
-        <h1>💌 Hubungi Kami</h1>
-        <p>Terima kasih sudah mengunjungi CeriBlossom.</p>
-        <p>Instagram: @ceriblossom</p>
-        <p>WhatsApp: 08xxxxxxxxxx</p>
-    </section>
-</main>
+<!-- PROMO -->
+<section class="promo" id="promo">
+    <div>
+        <p>🌷 PENAWARAN SPESIAL 🌷</p>
+        <h2>Berikan Kebahagiaan<br>Lewat Bunga</h2>
+        <p>Dapatkan bunga cantik untuk momen istimewamu.</p>
+        <a href="#toko" class="btn">Lihat Produk</a>
+    </div>
+    <img src="gambar/bouquet.jpg" alt="Promo buket bunga">
+</section>
 
-<div class="navigasi">
-    <button onclick="slideSebelumnya()">❮</button>
-    <span id="nomor">1 / 4</span>
-    <button onclick="slideBerikutnya()">❯</button>
+<!-- TENTANG -->
+<section class="section tentang" id="tentang">
+    <div class="tentang-image">
+        <img src="gambar/tulip.jpg" alt="Bunga CeriBlossom">
+    </div>
+    <div class="tentang-text">
+        <p>TENTANG KAMI</p>
+        <h2>CeriBlossom 🌸</h2>
+        <p>
+            CeriBlossom adalah toko bunga yang menghadirkan
+            berbagai pilihan bunga dan buket cantik.
+            Kami percaya bahwa bunga dapat menyampaikan
+            perasaan yang sulit diungkapkan dengan kata-kata.
+        </p>
+        <p>
+            Jadikan setiap momen lebih berkesan bersama
+            rangkaian bunga dari CeriBlossom.
+        </p>
+    </div>
+</section>
+
+<!-- KONTAK -->
+<section class="kontak" id="kontak">
+    <p>HUBUNGI KAMI</p>
+    <h2>Ingin Memesan Bunga? 💐</h2>
+    <p>Kami siap membantu membuat momenmu lebih istimewa.</p>
+    <div class="kontak-info">
+        <span>📱 08xxxxxxxxxx</span>
+        <span>📷 @ceriblossom</span>
+        <span>✉️ ceriblossom@gmail.com</span>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <h2>🌸 CeriBlossom</h2>
+    <p>Keindahan bunga untuk setiap cerita.</p>
+    <p>© 2026 CeriBlossom. All Rights Reserved.</p>
+</footer>
+
+<!-- POPUP KERANJANG -->
+<div class="modal" id="modal-keranjang">
+    <div class="modal-box">
+        <button class="close" onclick="tutupPopup('modal-keranjang')">×</button>
+        <h2>🛒 Keranjang Belanja</h2>
+        <div id="isi-keranjang"></div>
+        <h3 id="total-harga">Total: Rp0</h3>
+        <button class="btn full" onclick="bukaCheckout()">Lanjut Pemesanan</button>
+    </div>
 </div>
+
+<!-- POPUP PEMESANAN -->
+<div class="modal" id="modal-checkout">
+    <div class="modal-box">
+        <button class="close" onclick="tutupPopup('modal-checkout')">×</button>
+        <h2>🌷 Formulir Pemesanan</h2>
+
+        <form id="form-pesanan">
+            <label>Nama Lengkap</label>
+            <input type="text" id="nama" placeholder="Masukkan nama" required>
+
+            <label>Nomor WhatsApp</label>
+            <input type="tel" id="telepon" placeholder="Masukkan nomor WhatsApp" required>
+
+            <label>Alamat Pengiriman</label>
+            <textarea id="alamat" placeholder="Masukkan alamat lengkap" required></textarea>
+
+            <label>Metode Pembayaran</label>
+            <select id="pembayaran" required>
+                <option value="">Pilih pembayaran</option>
+                <option>QRIS (Simulasi)</option>
+                <option>Transfer Bank (Simulasi)</option>
+                <option>DANA (Simulasi)</option>
+                <option>GoPay (Simulasi)</option>
+                <option>COD</option>
+            </select>
+
+            <button type="submit" class="btn full">Buat Pesanan 💗</button>
+        </form>
+    </div>
+</div>
+
+<div id="toast"></div>
 
 <script src="script.js"></script>
 </body>
